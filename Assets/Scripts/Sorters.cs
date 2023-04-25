@@ -12,13 +12,13 @@ public class Sorters : MonoBehaviour
     private void Start()
     {
         Create();
-        Print();
+        Print("Created array");
         
         Randomize();
-        Print();
+        Print("Randomized array");
         
         Sort();
-        Print();
+        Print("Sorted array");
     }
 
     private void Create()
@@ -77,12 +77,61 @@ public class Sorters : MonoBehaviour
         // higherMidIndex => if higher than higherMidIndex and smaller than highIndex and lowerSearchArea => move to higherMidIndex + 1 => higherMidIndex++
         // highIndex => if larger place to correct index in highSortArea => highIndex--
         // After comparisons and possible movement take a new value for comparison
+
+        _lowIndex = 0;
+        _highIndex = _ints.Length - 1;
+        _lowMid = _ints.Length / 2;
+        _highMid = _ints.Length / 2;
+        
+        // For testing purposes -------------------------------------------------------
+        
+        var highSearch = false;
+        var higher = false;
+        
+        // For testing purposes -------------------------------------------------------
+        
+        while (_lowIndex < _lowMid - 1 || _highMid < _highIndex - 1)
+        {
+            Debug.Log($"Indexes in the loop: {_lowIndex}, {_lowMid}, {_highMid}, {_highIndex}");
+            
+            // Insert sort here -------------------------------------------------------
+
+            if (!highSearch && !higher)
+            {
+                _lowIndex++;
+                higher = true;
+                continue;
+            }
+
+            if (!highSearch)
+            {
+                _lowMid--;
+                highSearch = true;
+                higher = false;
+                continue;
+            }
+
+            if (!higher)
+            {
+                _highMid++;
+                higher = true;
+                continue;
+            }
+            
+            _highIndex--;
+            highSearch = false;
+            higher = false;
+            
+            // Insert sort here -------------------------------------------------------
+        }
+        
+        Debug.Log($"Indexes in the end: {_lowIndex}, {_lowMid}, {_highMid}, {_highIndex}");
     }
 
-    private void Print()
+    private void Print(string phase = null)
     {
-        var array = _ints.Aggregate("", (current, value) => current + (value + ", "));
+        var arrayValues = _ints.Aggregate("", (current, value) => current + (value + ", "));
         
-        Debug.Log(array);
+        Debug.Log($"Status: {phase}, values: {arrayValues}");
     }
 }
